@@ -1,66 +1,70 @@
 from typing import DefaultDict
-from pdsketch import QuotientSpace, PDPoint
+from pdsketch import PDPoint
 from metricspaces import MetricSpace
+from pdsketch.distance import l_inf
 
-class Diagram(QuotientSpace):
+class Diagram(MetricSpace):
     """
-    A class to store persistence diagrams. Main input is a set of points in the persistence plane.
-    Designed to deal with multiplicity in input.
+    A class to store persistence diagrams.
+    This class represents the space of PDs and is designed to run as a
+    quotient of a metric space.
+    Main input is a list of points in the persistence plane.
+    Allows for multiplicity in input.
     """
-    def __init__(self, X=()):
-
-        # Remove any duplicate points that were input. But this multiplicity must be stored somewhere.
-        # self.multiplicity stores the number of extra copies (>1) of each point
-        # When a sketch transfers a point, this is the mass that gets moved.
-
-        # LATER TRANSFERRED THE MULTIPLICITY COMPUTATION TO NEIGHBORGRAPH.PY. NEED TO REVIEW THIS
-        # self.multiplicity = DefaultDict(int)
-        # pointset = {}
-        # for x in X:
-        #     p = Point(x)
-        #     if p in pointset:
-        #         self.multiplicity[p] += 1
-        #     else:
-        #         pointset.add(p)
-        # # self.points = list(pointset)
-
-        # # Store the number of unique points input
-        # self.numpoints = len(pointset)
+    def __init__(self, X=[]):
 
         points = [PDPoint(p) for p in X]
         # Append list of projections
         points += [self.diagproj(p) for p in points]
 
-        # for p in self.points:
-        #     Y.append(self.diagproj(p))
-        
-        # for p in Y:
-        #     if p in X:
-        #         self.multiplicity[p] += 1
-        #     else:
-        #         pointset.add(p)
+        super().__init__(points, dist=self.dist)
+        self.comparedist = self.comparedist
 
-        # self.points = list(pointset)
-
-        space = MetricSpace(points, dist=self.l_inf)
-
-        super().__init__(space, space[len(X):])
-
-    # def add(self, point, M):
-    #     M.append(point)
-
-    def __iter__(self):
-        return iter(self.points)
-
-    def __len__(self):
-        return len(self.points)
-
-    def diagproj(self, a):
+    def diagproj(self, a:PDPoint)->PDPoint:
+        """
+        Compute the projection of a point `a` on the diagonal.
+        """
         return PDPoint([(a[0]+a[1])/2, (a[0]+a[1])/2])
 
-    def l_inf(self, a, b):
-        return max(abs(x-y) for x,y in zip(a, b))
-        
+    def pp_dist(self, a:PDPoint, b:PDPoint)->float:
+        """
+        Compute quotient distance in the persistence plane.
+        The diagonal is treated as a single point.
+        """
+        return min(l_inf(a, b), l_inf(a, self.diagproj(a))+l_inf(b, self.diagproj(b)))
+    
+    def isdiagonalpoint(self, a:PDPoint)->bool:
+        """
+        Check if `a` is a diagonal point.
+        """
+        return a[0]==a[1]
+
+    def dist(self, a:PDPoint, b:PDPoint)->float:
+        """
+        Compute distance between points `a` and `b`.
+
+        If both `a` and `b` are on the diagonal or both are off the diagonal
+         then the method returns the l_inf distance between `a` and `b`.
+        If one point is on the diagonal and the other is off diagonal then
+         the method returns the quotient distance between `a` and `b`.
+        """
+        if self.isdiagonalpoint(a) == self.isdiagonalpoint(b):
+            return l_inf(a,b)
+        else:
+            return self.pp_dist(a, b)
+    
+    def comparedist(self, x:PDPoint, a:PDPoint, b:PDPoint, alpha:float=1)->bool:
+        """
+        Check if `a` is closer to `x` than `b` .
+
+        Overrides method in MetricSpace.
+
+        Comparison is done on a tuple of the persistence plane distance
+         and l_inf distance.
+        """
+        return ((self.pp_dist(x, a), l_inf(x, a)) < 
+                (alpha*self.pp_dist(x, b), alpha*l_inf(x, b)))
+
     def loadfromfile():
         pass
 

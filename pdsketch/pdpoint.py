@@ -1,3 +1,6 @@
+import pdsketch
+
+
 class PDPoint:
     """A simple class to describe points in Euclidean space with float
     coordinates.
@@ -13,11 +16,12 @@ class PDPoint:
 
     @staticmethod
     def fromstring(s):
-        """Return a new point object from a string representation.
         """
-        return PDPoint(x for x in s.split())
+        Return a new point object from a string representation.
+        """
+        return PDPoint([x for x in s.split()])
 
-    def dist(self, other):
+    def dist(self, other) -> float:
         """Compute the l_inf distance between the `self` and `other`.
         If the dimensions don't match the distance is computed in projection
         down to the common subspace.

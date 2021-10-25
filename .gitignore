@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Discarded format
+pdsketch/quotientspace.py
+pdsketch/diagram1.py
