@@ -12,3 +12,4 @@ The elements of a persistence diagram are called **points**, though if one ident
 The **pdsketch** library is an implementation of the algorithms in the paper, Sketching Persistence Diagrams by Donald R. Sheehy and Siddharth Sheth.
 The goal is to provide progressively more precise sketches of a persistence diagram by representing it as set with multiplicity.
 For any given integer k, one can have a persistence diagram with k points.
+The algorithm approximates the closest k-point diagram to the input diagram (in bottleneck distance).
