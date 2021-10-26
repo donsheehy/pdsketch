@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'pdskect'
+project = 'pdsketch'
 copyright = '2021, Donald R. Sheehy and Siddharth Sheth'
 author = 'Donald R. Sheehy and Siddharth Sheth'
 
