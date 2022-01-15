@@ -131,3 +131,7 @@ dmypy.json
 # Discarded format
 pdsketch/quotientspace.py
 pdsketch/diagram1.py
+images/
+examples/*.py
+*.pdf
+*.svg

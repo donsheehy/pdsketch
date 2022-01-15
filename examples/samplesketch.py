@@ -1,8 +1,10 @@
 from pdsketch import Sketch, PDPoint, Diagram
 from random import randrange, seed
 
-M = 3000
-N = 50
+from pdsketch.plot_sketch import plot_sketch
+
+M = 300
+N = 100
 n = 10
 seed(0)
 
@@ -17,5 +19,11 @@ D = Diagram(points)
 
 S = Sketch(D, n)
 
-for i in range(n):
-    print(S[i])
+# for i in range(2):
+#     plot_sketch(S[i], filename="sketch_"+str(i))
+
+S.savetofile()
+S.loadfromfile("sketch")
+
+for i in range(2):
+    plot_sketch(S[i], filename="sketch_"+str(i))

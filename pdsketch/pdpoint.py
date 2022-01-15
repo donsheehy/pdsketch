@@ -2,7 +2,8 @@ import pdsketch
 
 
 class PDPoint:
-    """A simple class to describe points in Euclidean space with float
+    """
+    A simple class to describe points in Euclidean space with float
     coordinates.
     """
         

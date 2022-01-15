@@ -6,8 +6,7 @@ from pdsketch.distance import l_inf
 class Diagram(MetricSpace):
     """
     A class to store persistence diagrams.
-    This class represents the space of PDs and is designed to run as a
-    quotient of a metric space.
+    This class represents the space of PDs and is designed to run as a quotient of a metric space.
     Main input is a list of points in the persistence plane.
     Allows for multiplicity in input.
     """
@@ -65,8 +64,8 @@ class Diagram(MetricSpace):
         return ((self.pp_dist(x, a), l_inf(x, a)) < 
                 (alpha*self.pp_dist(x, b), alpha*l_inf(x, b)))
 
-    def loadfromfile():
-        pass
+    # def loadfromfile():
+    #     pass
 
-    def savetofile():
-        pass
+    # def savetofile():
+    #     pass
