@@ -1,19 +1,17 @@
-import pdsketch
-
-
 class PDPoint:
     """
     A simple class to describe points in Euclidean space with float
     coordinates.
     """
         
-    def __init__(self, coords):
+    def __init__(self, coords, mult=1):
         if len(coords)!=2:
             raise TypeError("Invalid points input. Points in persistence plane are 2D")
         if coords[0] > coords[1]:
             raise ValueError("Birth value cannot be greater than death value in the"+
                                 " persistence plane")
         self._p = tuple(float(x) for x in coords)
+        self.mass = mult
 
     @staticmethod
     def fromstring(s):
@@ -28,6 +26,25 @@ class PDPoint:
         down to the common subspace.
         """
         return max(abs(a-b) for (a,b) in zip(self, other))
+
+    def diagproj(self):
+        """
+        Compute the projection of this point on the diagonal.
+        """
+        return PDPoint([(self[0]+self[1])/2, (self[0]+self[1])/2], self.mass)
+
+    def pp_dist(self, other)->float:
+        """
+        Compute quotient distance in the persistence plane.
+        The diagonal is treated as a single point.
+        """
+        return min(self.dist(other), self.dist(self.diagproj())+other.dist(other.diagproj()))
+    
+    def isdiagonalpoint(self)->bool:
+        """
+        Check if this is a diagonal point.
+        """
+        return self[0]==self[1]
 
     def __getitem__(self, index):
         return self._p[index]

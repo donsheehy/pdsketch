@@ -135,3 +135,4 @@ images/
 examples/*.py
 *.pdf
 *.svg
+.DS_Store

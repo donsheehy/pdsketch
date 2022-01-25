@@ -10,33 +10,8 @@ class Diagram(MetricSpace):
     Main input is a list of points in the persistence plane.
     Allows for multiplicity in input.
     """
-    def __init__(self, X=[]):
-
-        points = [PDPoint(p) for p in X]
-        # Append list of projections
-        points += [self.diagproj(p) for p in points]
-
-        super().__init__(points, dist=self.dist)
-        self.comparedist = self.comparedist
-
-    def diagproj(self, a:PDPoint)->PDPoint:
-        """
-        Compute the projection of a point `a` on the diagonal.
-        """
-        return PDPoint([(a[0]+a[1])/2, (a[0]+a[1])/2])
-
-    def pp_dist(self, a:PDPoint, b:PDPoint)->float:
-        """
-        Compute quotient distance in the persistence plane.
-        The diagonal is treated as a single point.
-        """
-        return min(l_inf(a, b), l_inf(a, self.diagproj(a))+l_inf(b, self.diagproj(b)))
-    
-    def isdiagonalpoint(self, a:PDPoint)->bool:
-        """
-        Check if `a` is a diagonal point.
-        """
-        return a[0]==a[1]
+    def __init__(self, X=()):
+        super().__init__([PDPoint(p) for p in X], dist=self.dist)
 
     def dist(self, a:PDPoint, b:PDPoint)->float:
         """
@@ -47,10 +22,10 @@ class Diagram(MetricSpace):
         If one point is on the diagonal and the other is off diagonal then
          the method returns the quotient distance between `a` and `b`.
         """
-        if self.isdiagonalpoint(a) == self.isdiagonalpoint(b):
-            return l_inf(a,b)
+        if a.isdiagonalpoint() == b.isdiagonalpoint():
+            return a.dist(b)
         else:
-            return self.pp_dist(a, b)
+            return a.pp_dist(b)
     
     def comparedist(self, x:PDPoint, a:PDPoint, b:PDPoint, alpha:float=1)->bool:
         """
@@ -61,8 +36,8 @@ class Diagram(MetricSpace):
         Comparison is done on a tuple of the persistence plane distance
          and l_inf distance.
         """
-        return ((self.pp_dist(x, a), l_inf(x, a)) < 
-                (alpha*self.pp_dist(x, b), alpha*l_inf(x, b)))
+        return ((x.pp_dist(a), x.dist(a)) < 
+                (alpha*x.pp_dist(b), alpha*x.dist(b)))
 
     # def loadfromfile():
     #     pass
