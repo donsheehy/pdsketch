@@ -1,54 +1,105 @@
 import unittest
-from pdsketch import Diagram, PDPoint, l_inf
+from pdsketch import Diagram, PDPoint
 
 class TestDiagram(unittest.TestCase):
-    def test_diagram_super_methods(self):
-        D = Diagram([(0,5),(3,8)])
+    def test_diagram_dunder_methods(self):
+        D = Diagram([(0,5),(3,8), [5,5]])
         a = PDPoint((0,5))
         b = PDPoint((3,8))
+        diagonal = PDPoint([0,0])
         p = iter(D)
-        assert next(p) == a
-        assert next(p) == b
-
-        assert len(D) == 4
+        point_set = set()
+        point_set.add(next(p))
+        point_set.add(next(p))
+        point_set.add(next(p))
+        self.assertEqual(point_set, {a, b, diagonal})
+        self.assertEqual(len(D), 2)
     
-    def test_diagonal_projection(self):
-        D = Diagram()
-        assert D.diagproj(PDPoint((3,8))) == PDPoint((5.5,5.5))
-    
-    def test_pp_dist(self):
-        a = PDPoint((0,7))
-        b = PDPoint((2,8))
-        c = PDPoint((8,10))
-        d = PDPoint((0,2))
-        D = Diagram()
-        assert D.pp_dist(a,b) == 2
-        assert D.pp_dist(c,d) == 2
-        # print(D.dist(c,d))
+    def test_diagram_basic(self):
+        D = Diagram([(0,5),(3,8)])
+        a = PDPoint([0,5])
+        b = PDPoint([3,8])
+        self.assertRaises(ValueError, Diagram, [(2,5), (5,7)], [1])
+        self.assertTrue(a in D)
+        self.assertTrue(b in D)
+        self.assertEqual(D.mass[a], 1)
+        self.assertEqual(D.mass[b], 1)
 
-    def test_is_diagonal_point(self):
-        D = Diagram()
-        assert D.isdiagonalpoint(PDPoint((5,5))) == True
-        assert D.isdiagonalpoint(PDPoint((5,8))) == False
+    def test_diagram_mult(self):
+        D = Diagram([(0,5)], [5])
+        a = PDPoint([0,5])
+        self.assertTrue(a in D)
+        self.assertEqual(D.mass[a], 5)
 
-    def test_dist(self):
+    def test_diagram_add(self):
         D = Diagram()
-        a = PDPoint((5,5))
-        b = PDPoint((2,2))
-        c = PDPoint((0,2))
-        d = PDPoint((2,8))
-        assert D.dist(a,b) == 3
-        assert D.dist(c,d) == 6
-        assert D.dist(a,c) == 1
+        a = PDPoint([0,5])
+        b = PDPoint([3,8])
+        D.add(a)
+        D.add(b, 7)
+        self.assertTrue(a in D)
+        self.assertTrue(b in D)
+        self.assertEqual(D.mass[a], 1)
+        self.assertEqual(D.mass[b], 7)
 
-    def test_compare_dist(self):
+    def test_diagram_add_diagonal(self):
         D = Diagram()
-        a = PDPoint((5,5))
-        b = PDPoint((2,2))
-        c = PDPoint((0,2))
-        d = PDPoint((2,8))
-        
-        assert D.comparedist(c, a, b) == False
+        a = PDPoint([5,5])
+        b = PDPoint([8,8])
+        diagonal = PDPoint([0,0])
+        D.add(a, 4)
+        D.add(b)
+        self.assertTrue(a not in D)
+        self.assertTrue(b not in D)
+        self.assertTrue(diagonal in D)
+        self.assertEqual(D.mass[diagonal], 5)
+
+    def test_diagram_add_neg_mult(self):
+        D = Diagram()
+        a = PDPoint([0,5])
+        D.add(a, 4)
+        self.assertTrue(a in D)
+        self.assertEqual(D.mass[a], 4)
+        D.add(a, -4)
+        self.assertTrue(a not in D)
+
+    def test_diagram_remove(self):
+        D = Diagram()
+        a = PDPoint([0,5])
+        self.assertRaises(KeyError, D.remove, a)
+        self.assertTrue(a not in D)
+        D.add(a)
+        self.assertTrue(a in D)
+        D.remove(a)
+        self.assertTrue(a not in D)
+
+    def test_diagram_clear(self):
+        D = Diagram()
+        a = PDPoint([0,5])
+        b = PDPoint([3,8])
+        D.add(a)
+        D.add(b, 7)
+        self.assertEqual(len(D), 2)
+        self.assertNotEqual(len(D.mass), 0)
+        D.clear()
+        self.assertEqual(len(D), 0)
+        self.assertEqual(len(D.mass), 0)
+
+    def test_diagram_get_lists(self):
+        a = PDPoint([0,5])
+        b = PDPoint([3,8])
+        D = Diagram([(0,5),(3,8)], [2,3])
+        point, mass = D.get_point_mass_lists()
+        self.assertEqual(point, list({a,b}))
+        self.assertEqual(mass, [D.mass[point[0]], D.mass[point[1]]])
+
+    def test_diagram_file(self):
+        D = Diagram([(0,5),(3,8)], [2,3])
+        D.savetofile("test_diagram.txt")
+        p, m = D.get_point_mass_lists()
+        D_1 = Diagram(p, m)
+        D.loadfromfile("test_diagram.txt")
+        self.assertEqual(D_1, D)
 
 if __name__=='__main__':
     unittest.main()

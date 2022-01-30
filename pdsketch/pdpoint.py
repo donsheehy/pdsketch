@@ -1,17 +1,21 @@
 class PDPoint:
     """
-    A simple class to describe points in Euclidean space with float
-    coordinates.
+    A class to describe points in the persistence plane.
     """
         
-    def __init__(self, coords, mult=1):
+    def __init__(self, coords):
+        """
+        Parameters
+        ----------
+        coords: tuple
+            The coordinates of the point
+            The tuple must contain two float coordinates such that the second coordinate is at least as great as the first.
+        """
         if len(coords)!=2:
-            raise TypeError("Invalid points input. Points in persistence plane are 2D")
+            raise TypeError("Invalid points input. Points in the persistence plane are 2D")
         if coords[0] > coords[1]:
-            raise ValueError("Birth value cannot be greater than death value in the"+
-                                " persistence plane")
+            raise ValueError("Birth value cannot be greater than death value")
         self._p = tuple(float(x) for x in coords)
-        self.mass = mult
 
     @staticmethod
     def fromstring(s):
@@ -21,28 +25,37 @@ class PDPoint:
         return PDPoint([x for x in s.split()])
 
     def dist(self, other) -> float:
-        """Compute the l_inf distance between the `self` and `other`.
-        If the dimensions don't match the distance is computed in projection
-        down to the common subspace.
+        # The reason this exists as a copy of `self.pp_dist` is to allow easy swapping over to `self.l_inf_dist` if needed.
         """
-        return max(abs(a-b) for (a,b) in zip(self, other))
+        Compute quotient distance in the persistence plane.
+        The diagonal is treated as a single point.
+        """
+        return self.pp_dist(other)
 
     def diagproj(self):
         """
         Compute the projection of this point on the diagonal.
         """
-        return PDPoint([(self[0]+self[1])/2, (self[0]+self[1])/2], self.mass)
+        return PDPoint([(self[0]+self[1])/2, (self[0]+self[1])/2])
 
     def pp_dist(self, other)->float:
         """
         Compute quotient distance in the persistence plane.
         The diagonal is treated as a single point.
         """
-        return min(self.dist(other), self.dist(self.diagproj())+other.dist(other.diagproj()))
+        return min(self.l_inf_dist(other), self.l_inf_dist(self.diagproj())+other.l_inf_dist(other.diagproj()))
     
+    def l_inf_dist(self, other)->float:
+        """
+        Compute the l_inf distance between the `self` and `other`.
+        If the dimensions don't match the distance is computed in projection
+        down to the common subspace.
+        """
+        return max(abs(a-b) for (a,b) in zip(self, other))
+        
     def isdiagonalpoint(self)->bool:
         """
-        Check if this is a diagonal point.
+        Check if this point lies on the diagonal.
         """
         return self[0]==self[1]
 

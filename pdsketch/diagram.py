@@ -1,46 +1,112 @@
-from typing import DefaultDict
+from collections import defaultdict
 from pdsketch import PDPoint
-from metricspaces import MetricSpace
-from pdsketch.distance import l_inf
 
-class Diagram(MetricSpace):
+class Diagram():
     """
     A class to store persistence diagrams.
-    This class represents the space of PDs and is designed to run as a quotient of a metric space.
-    Main input is a list of points in the persistence plane.
-    Allows for multiplicity in input.
+    Main input is a set of points in the persistence plane with optional multiplicity.
+    This implementation is a multiset.
     """
-    def __init__(self, X=()):
-        super().__init__([PDPoint(p) for p in X], dist=self.dist)
 
-    def dist(self, a:PDPoint, b:PDPoint)->float:
+    def __init__(self, points=(), mass:list() = None):
         """
-        Compute distance between points `a` and `b`.
+        Parameters
+        ----------
+        points: list
+            The points in the the persistence diagram
+        mass: list
+            The corresponding multiplicity of points
+        """
+        if mass == None:
+            mass = [1]*len(points)
+        elif len(mass) != len(points):
+            raise ValueError("The lengths of mass and points should be the same")
+        self._p = set()
+        self.mass = defaultdict(int)
+        self._diagonal = PDPoint([0,0])
+        for i, p in enumerate(points):
+            self.add(PDPoint(p), mass[i])
 
-        If both `a` and `b` are on the diagonal or both are off the diagonal
-         then the method returns the l_inf distance between `a` and `b`.
-        If one point is on the diagonal and the other is off diagonal then
-         the method returns the quotient distance between `a` and `b`.
+    def add(self, point: PDPoint, mass: int = 1):
         """
-        if a.isdiagonalpoint() == b.isdiagonalpoint():
-            return a.dist(b)
+        Add a point to the diagram with multiplicity.
+        """
+        if point.isdiagonalpoint():
+            point = self._diagonal
+        self._p.add(point)
+        self.mass[point] += mass
+        if self.mass[point] <= 0:            
+            self.remove(point)
+
+    def remove(self, point: PDPoint):
+        """
+        Remove a point from the diagram.
+        """
+        if point in self:
+            self._p.remove(point)
+            del self.mass[point]
         else:
-            return a.pp_dist(b)
+            raise KeyError("Point is not in the diagram")
     
-    def comparedist(self, x:PDPoint, a:PDPoint, b:PDPoint, alpha:float=1)->bool:
+    def clear(self):
         """
-        Check if `a` is closer to `x` than `b` .
-
-        Overrides method in MetricSpace.
-
-        Comparison is done on a tuple of the persistence plane distance
-         and l_inf distance.
+        Remove all points from the diagram.
         """
-        return ((x.pp_dist(a), x.dist(a)) < 
-                (alpha*x.pp_dist(b), alpha*x.dist(b)))
+        self._p.clear()
+        self.mass.clear()
 
-    # def loadfromfile():
-    #     pass
+    def get_point_mass_lists(self):
+        """
+        Returns a tuple of lists.
+        The first list contains all points in the diagram in PDPoint format.
+        The second list contains all corresponding multiplicities.
+        
+        Note: The diagonal is ignored.
+        """
+        points = []
+        masses = []
+        for p in self._p - {self._diagonal}:
+            points.append(p)
+            masses.append(self.mass[p])
+        return points, masses
 
-    # def savetofile():
-    #     pass
+    def loadfromfile(self,filename:str):
+        """
+        Clears current diagram and loads a diagram from a text file.
+        Format for ith line:
+        b_i d_i; mass_i
+        where (b_i, d_i) is the ith point in the diagram with
+        multiplicity mass_i.
+        """
+        self.clear()
+        with open(filename, 'r') as d:
+            for line in d:
+                point, mass = line.rstrip().split("; ")
+                self.add(PDPoint.fromstring(point), int(mass))
+
+    def savetofile(self, filename:str = "diagram.txt"):
+        """
+        Save current diagram to a text file.
+        Format for ith line:
+        b_i d_i; mass_i
+        where (b_i, d_i) is the ith point in the diagram with
+        multiplicity mass_i.
+        """
+        with open(filename, 'w') as d:
+            for p in self:
+                d.write("; ".join([str(p), str(self.mass[p])])+"\n")
+
+    def __iter__(self):
+        return iter(self._p)
+
+    def __len__(self):
+        """
+        Note: The diagonal is ignored when computing the length
+        """
+        return len(self._p-{self._diagonal})
+
+    def __contains__(self, point: PDPoint):
+        return point in self._p
+
+    def __eq__(self, other):
+        return self._p == other._p and self.mass == other.mass
