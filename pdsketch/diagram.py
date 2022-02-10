@@ -21,7 +21,6 @@ class Diagram():
             mass = [1]*len(points)
         elif len(mass) != len(points):
             raise ValueError("The lengths of mass and points should be the same")
-        # self._p = set()
         self.mass = defaultdict(int)
         self._diagonal = PDPoint([0,0])
         for i, p in enumerate(points):
@@ -39,7 +38,6 @@ class Diagram():
         """
         if point.isdiagonalpoint():
             point = self._diagonal
-        # self._p.add(point)
         self.mass[point] += mass
         if self.mass[point] <= 0:            
             self.remove(point)
@@ -49,7 +47,6 @@ class Diagram():
         Remove a point from the diagram.
         """
         if point in self:
-            # self._p.remove(point)
             del self.mass[point]
         else:
             raise KeyError("Point is not in the diagram")
@@ -58,7 +55,6 @@ class Diagram():
         """
         Remove all points from the diagram.
         """
-        # self._p.clear()
         self.mass.clear()
 
     def get_point_mass_lists(self):
