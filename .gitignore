@@ -139,3 +139,5 @@ examples/*.py
 *.png
 .DS_Store
 *.txt
+*.csv
+*.xlsx
