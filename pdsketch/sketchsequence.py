@@ -101,3 +101,6 @@ class SketchSequence:
 
     def __hash__(self) -> int:
         return hash(tuple(tuple(sketch) for sketch in self._sketches))
+
+    def __len__(self) -> int:
+        return len(self._sketches)

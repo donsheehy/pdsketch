@@ -136,4 +136,6 @@ images/
 examples/*.py
 *.pdf
 *.svg
+*.png
 .DS_Store
+*.txt
