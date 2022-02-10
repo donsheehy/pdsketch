@@ -23,8 +23,8 @@ def plot_diagram(diagram: Diagram, M: int = 0, filename: str = "diagram"):
     with svg_plus_pdf(M, M, filename, sketch_style) as canvas:
         # Draw points in the diagram using modified coordinates.
         # If point is diagonal then draw it in the center of the diagonal.
-        [PDPointViz(p[0], M-p[1], diagram.masses[p]).draw(canvas) if p != diagonal 
-            else PDPointViz(M//2, M//2, diagram.masses[p]).draw(canvas) for p in diagram]
+        [PDPointViz(p[0], M-p[1], diagram.mass[p]).draw(canvas) if p != diagonal 
+            else PDPointViz(M//2, M//2, diagram.mass[p]).draw(canvas) for p in diagram]
         
         # Draw remaining borders of the bounded persistence plane.
         Line((0,M), (M,0)).draw(canvas)

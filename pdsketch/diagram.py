@@ -21,11 +21,16 @@ class Diagram():
             mass = [1]*len(points)
         elif len(mass) != len(points):
             raise ValueError("The lengths of mass and points should be the same")
-        self._p = set()
         self.mass = defaultdict(int)
         self._diagonal = PDPoint([0,0])
         for i, p in enumerate(points):
             self.add(PDPoint(p), mass[i])
+    
+    def points(self):
+        """
+        Return a list of points in the diagram.
+        """
+        return list(self.mass)
 
     def add(self, point: PDPoint, mass: int = 1):
         """
@@ -33,7 +38,6 @@ class Diagram():
         """
         if point.isdiagonalpoint():
             point = self._diagonal
-        self._p.add(point)
         self.mass[point] += mass
         if self.mass[point] <= 0:            
             self.remove(point)
@@ -43,7 +47,6 @@ class Diagram():
         Remove a point from the diagram.
         """
         if point in self:
-            self._p.remove(point)
             del self.mass[point]
         else:
             raise KeyError("Point is not in the diagram")
@@ -52,7 +55,6 @@ class Diagram():
         """
         Remove all points from the diagram.
         """
-        self._p.clear()
         self.mass.clear()
 
     def get_point_mass_lists(self):
@@ -65,9 +67,10 @@ class Diagram():
         """
         points = []
         masses = []
-        for p in self._p - {self._diagonal}:
-            points.append(p)
-            masses.append(self.mass[p])
+        for p in self.mass:
+            if p != self._diagonal:
+                points.append(p)
+                masses.append(self.mass[p])
         return points, masses
 
     def loadfromfile(self,filename:str):
@@ -97,16 +100,19 @@ class Diagram():
                 d.write("; ".join([str(p), str(self.mass[p])])+"\n")
 
     def __iter__(self):
-        return iter(self._p)
+        return iter(self.mass)
 
     def __len__(self):
         """
         Note: The diagonal is ignored when computing the length
         """
-        return len(self._p-{self._diagonal})
+        if self._diagonal in self.mass:
+            return len(self.mass)-1
+        else:
+            return len(self.mass)
 
     def __contains__(self, point: PDPoint):
-        return point in self._p
+        return point in self.mass
 
     def __eq__(self, other):
-        return self._p == other._p and self.mass == other.mass
+        return self.mass == other.mass

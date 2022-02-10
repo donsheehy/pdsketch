@@ -90,8 +90,15 @@ class TestDiagram(unittest.TestCase):
         b = PDPoint([3,8])
         D = Diagram([(0,5),(3,8)], [2,3])
         point, mass = D.get_point_mass_lists()
-        self.assertEqual(point, list({a,b}))
+        self.assertEqual(point, list(dict({a:1,b:1})))
         self.assertEqual(mass, [D.mass[point[0]], D.mass[point[1]]])
+
+    def test_diagram_points(self):
+        a = PDPoint([0,5])
+        b = PDPoint([3,8])
+        D = Diagram([(0,5),(3,8)], [2,3])
+        points = D.points()
+        self.assertEqual(points, list(dict({a:1,b:1})))
 
     def test_diagram_file(self):
         D = Diagram([(0,5),(3,8)], [2,3])
