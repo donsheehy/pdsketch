@@ -73,7 +73,7 @@ class Diagram():
                 masses.append(self.mass[p])
         return points, masses
 
-    def loadfromfile(self,filename:str):
+    def loadfromfile(filename:str):
         """
         Clears current diagram and loads a diagram from a text file.
         Format for ith line:
@@ -81,11 +81,13 @@ class Diagram():
         where (b_i, d_i) is the ith point in the diagram with
         multiplicity mass_i.
         """
-        self.clear()
+        D = Diagram()
         with open(filename, 'r') as d:
             for line in d:
                 point, mass = line.rstrip().split("; ")
-                self.add(PDPoint.fromstring(point), int(mass))
+                D.add(PDPoint.fromstring(point), int(mass))
+
+        return D
 
     def savetofile(self, filename:str = "diagram.txt"):
         """

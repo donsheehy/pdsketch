@@ -14,6 +14,7 @@ class PDPoint:
         if len(coords)!=2:
             raise TypeError("Invalid points input. Points in the persistence plane are 2D")
         if coords[0] > coords[1]:
+            print(coords)
             raise ValueError("Birth value cannot be greater than death value")
         self._p = tuple(float(x) for x in coords)
 
@@ -22,7 +23,7 @@ class PDPoint:
         """
         Return a new point object from a string representation.
         """
-        return PDPoint([x for x in s.split()])
+        return PDPoint([float(x) for x in s.split()])
 
     def dist(self, other) -> float:
         # The reason this exists as a copy of `self.pp_dist` is to allow easy swapping over to `self.l_inf_dist` if needed.

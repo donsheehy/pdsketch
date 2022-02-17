@@ -105,7 +105,7 @@ class TestDiagram(unittest.TestCase):
         D.savetofile("test_diagram.txt")
         p, m = D.get_point_mass_lists()
         D_1 = Diagram(p, m)
-        D.loadfromfile("test_diagram.txt")
+        Diagram.loadfromfile("test_diagram.txt")
         self.assertEqual(D_1, D)
 
 if __name__=='__main__':
