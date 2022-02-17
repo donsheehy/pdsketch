@@ -5,6 +5,7 @@ from pdsketch.sketch_style import sketch_style
 
 def plot_matching(a: Diagram, b: Diagram, matching, bottleneck, filename):
 
+    # Select larger of the two diagrams as base
     plot_size_a = max(p[1] for p in a)
     plot_size_b = max(p[1] for p in b)
 
@@ -17,6 +18,7 @@ def plot_matching(a: Diagram, b: Diagram, matching, bottleneck, filename):
     with svg_plus_pdf(base_viz.plot_size, base_viz.plot_size, filename, sketch_style) as canvas:
         base_viz.draw_skeleton(canvas)
 
+        # Draw every line segment in the matching
         for p_a in matching:
             for p_b in matching[p_a]:
                 match_style = '_bottleneck' if p_a.dist(p_b) == bottleneck else '_matching'
@@ -30,5 +32,6 @@ def plot_matching(a: Diagram, b: Diagram, matching, bottleneck, filename):
                 label.align('left', ((x[0]+y[0])/2-8, base_viz.plot_size - (x[1]+y[1])/2))
                 label.draw(canvas)
 
+        # Draw every point
         base_viz.draw_points(canvas)
         other_viz.draw_points(canvas)
