@@ -23,10 +23,10 @@ def plot_matching(a: Diagram, b: Diagram, matching, bottleneck, filename):
             for p_b in matching[p_a]:
                 match_style = '_bottleneck' if p_a.dist(p_b) == bottleneck else '_matching'
                 mass = matching[p_a][p_b]
-                
+
                 x = p_b.diagproj() if p_a.isdiagonalpoint() else p_a
                 y = p_a.diagproj() if p_b.isdiagonalpoint() else p_b
-                
+
                 Line((x[0], base_viz.plot_size-x[1]), (y[0], base_viz.plot_size-y[1]), style=match_style, stylesheet=sketch_style).draw(canvas)
                 label = Text(str(mass), style='_match_mass', stylesheet=sketch_style)
                 label.align('left', ((x[0]+y[0])/2-8, base_viz.plot_size - (x[1]+y[1])/2))
