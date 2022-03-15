@@ -25,7 +25,7 @@ class Diagram():
         self._diagonal = PDPoint([0,0])
         for i, p in enumerate(points):
             self.add(PDPoint(p), mass[i])
-    
+
     def points(self):
         """
         Return a list of points in the diagram.
@@ -39,7 +39,7 @@ class Diagram():
         if point.isdiagonalpoint():
             point = self._diagonal
         self.mass[point] += mass
-        if self.mass[point] <= 0:            
+        if self.mass[point] <= 0:
             self.remove(point)
 
     def remove(self, point: PDPoint):
@@ -50,7 +50,7 @@ class Diagram():
             del self.mass[point]
         else:
             raise KeyError("Point is not in the diagram")
-    
+
     def clear(self):
         """
         Remove all points from the diagram.
@@ -62,7 +62,7 @@ class Diagram():
         Returns a tuple of lists.
         The first list contains all points in the diagram in PDPoint format.
         The second list contains all corresponding multiplicities.
-        
+
         Note: The diagonal is ignored.
         """
         points = []
@@ -106,6 +106,7 @@ class Diagram():
 
     def __len__(self):
         """
+        Return the number of distinct points in the diagonal.
         Note: The diagonal is ignored when computing the length
         """
         if self._diagonal in self.mass:
@@ -114,7 +115,15 @@ class Diagram():
             return len(self.mass)
 
     def __contains__(self, point: PDPoint):
+        """
+        Test if a point is in the diagram.
+        """
         return point in self.mass
 
     def __eq__(self, other):
+        """
+        Tests equality of diagrams including multiplicity.
+        That is, two diagrams are equal if they have the same points and
+        those points have the same multiplicity.
+        """
         return self.mass == other.mass

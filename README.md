@@ -1,2 +1,3 @@
 # pdsketch
-A Python library for computing sketches of persistence diagrams.
+
+A Python package for computing sketches of persistence diagrams.
