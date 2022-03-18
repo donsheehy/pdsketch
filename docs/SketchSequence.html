@@ -86,8 +86,8 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pdsketch.SketchSequence.loadfromfile">
-<span class="sig-name descname"><span class="pre">loadfromfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.loadfromfile" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pdsketch.SketchSequence.load_from_file">
+<span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.load_from_file" title="Permalink to this definition"></a></dt>
 <dd><p>Clears current sketches and loads sketches from a text file.
 File format:
 b_i d_i; parent_i; transportplan_i
@@ -96,8 +96,8 @@ and transportplan_i is the ith transportation plan in defaultdict(int) format.</
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdsketch.SketchSequence.savetofile">
-<span class="sig-name descname"><span class="pre">savetofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sketch'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.savetofile" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pdsketch.SketchSequence.save_to_file">
+<span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sketch'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.save_to_file" title="Permalink to this definition"></a></dt>
 <dd><p>Save current sketches to a text file.
 The ith line will be saved as follows:
 b_i d_i; parent_i; transportplan_i
