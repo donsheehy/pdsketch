@@ -14,7 +14,7 @@ class TestDiagram(unittest.TestCase):
         point_set.add(next(p))
         self.assertEqual(point_set, {a, b, diagonal})
         self.assertEqual(len(D), 2)
-    
+
     def test_diagram_basic(self):
         D = Diagram([(0,5),(3,8)])
         a = PDPoint([0,5])
@@ -102,10 +102,10 @@ class TestDiagram(unittest.TestCase):
 
     def test_diagram_file(self):
         D = Diagram([(0,5),(3,8)], [2,3])
-        D.savetofile("test_diagram.txt")
+        D.save_to_file("test_diagram.txt")
         p, m = D.get_point_mass_lists()
         D_1 = Diagram(p, m)
-        Diagram.loadfromfile("test_diagram.txt")
+        Diagram.load_from_file("test_diagram.txt")
         self.assertEqual(D_1, D)
 
 if __name__=='__main__':

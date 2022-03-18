@@ -19,10 +19,13 @@ class Diagram():
         """
         if mass == None:
             mass = [1]*len(points)
-        elif len(mass) != len(points):
-            raise ValueError("The lengths of mass and points should be the same")
+        else:
+            if len(mass) != len(points):
+                raise ValueError("The lengths of mass and points should be " +
+                "the same.")
         self.mass = defaultdict(int)
         self._diagonal = PDPoint([0,0])
+        self.total_mass = 0
         for i, p in enumerate(points):
             self.add(PDPoint(p), mass[i])
 
@@ -32,13 +35,16 @@ class Diagram():
         """
         return list(self.mass)
 
-    def add(self, point: PDPoint, mass: int = 1):
+    def add(self, point, mass: int = 1):
         """
         Add a point to the diagram with multiplicity.
         """
+        if not isinstance(point, PDPoint):
+            point = PDPoint(point)
         if point.isdiagonalpoint():
             point = self._diagonal
         self.mass[point] += mass
+        self.total_mass += mass
         if self.mass[point] <= 0:
             self.remove(point)
 
@@ -73,41 +79,49 @@ class Diagram():
                 masses.append(self.mass[p])
         return points, masses
 
-    def loadfromfile(filename:str):
+    def load_from_file(filename:str):
         """
-        Clears current diagram and loads a diagram from a text file.
+        Loads a diagram from a text file.
         Format for ith line:
-        b_i d_i; mass_i
-        where (b_i, d_i) is the ith point in the diagram with
-        multiplicity mass_i.
+        `b_i d_i; mass_i`
+        where `(b_i, d_i)` is the ith point in the diagram with
+        multiplicity `mass_i`.
+        The mass is optional.
         """
         D = Diagram()
         with open(filename, 'r') as d:
             for line in d:
-                point, mass = line.rstrip().split("; ")
-                D.add(PDPoint.fromstring(point), int(mass))
-
+                data = line.rstrip().split("; ")
+                point = PDPoint.fromstring(data[0])
+                mass = int(data[1]) if len(data) >= 2 else 1
+                D.add(point, mass)
         return D
 
-    def savetofile(self, filename:str = "diagram.txt"):
+    def __str__(self):
+        """
+        Convert the diagram to a string.
+        This is the same string format that is used for saving to a file.
+        """
+        return '\n'.join(f'{str(p)}; {str(self.mass[p])}' for p in self)
+
+    def save_to_file(self, filename:str = "diagram.txt"):
         """
         Save current diagram to a text file.
         Format for ith line:
-        b_i d_i; mass_i
-        where (b_i, d_i) is the ith point in the diagram with
-        multiplicity mass_i.
+        `b_i d_i; mass_i`
+        where `(b_i, d_i)` is the ith point in the diagram with
+        multiplicity `mass_i`.
         """
-        with open(filename, 'w') as d:
-            for p in self:
-                d.write("; ".join([str(p), str(self.mass[p])])+"\n")
+        with open(filename, 'w') as f:
+            f.write(str(self))
 
     def __iter__(self):
         return iter(self.mass)
 
     def __len__(self):
         """
-        Return the number of distinct points in the diagonal.
-        Note: The diagonal is ignored when computing the length
+        Return the number of distinct points off the diagonal.
+        Note: The diagonal is ignored when computing the length.
         """
         if self._diagonal in self.mass:
             return len(self.mass)-1
