@@ -89,7 +89,7 @@ This implementation is a multiset.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pdsketch.Diagram.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pdsketch.pdpoint.PDPoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.Diagram.add" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.Diagram.add" title="Permalink to this definition"></a></dt>
 <dd><p>Add a point to the diagram with multiplicity.</p>
 </dd></dl>
 
@@ -111,11 +111,12 @@ The second list contains all corresponding multiplicities.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pdsketch.Diagram.load_from_file">
 <span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.Diagram.load_from_file" title="Permalink to this definition"></a></dt>
-<dd><p>Clears current diagram and loads a diagram from a text file.
+<dd><p>Loads a diagram from a text file.
 Format for ith line:
-b_i d_i; mass_i
-where (b_i, d_i) is the ith point in the diagram with
-multiplicity mass_i.</p>
+<cite>b_i d_i; mass_i</cite>
+where <cite>(b_i, d_i)</cite> is the ith point in the diagram with
+multiplicity <cite>mass_i</cite>.
+The mass is optional.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -135,9 +136,9 @@ multiplicity mass_i.</p>
 <span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'diagram.txt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.Diagram.save_to_file" title="Permalink to this definition"></a></dt>
 <dd><p>Save current diagram to a text file.
 Format for ith line:
-b_i d_i; mass_i
-where (b_i, d_i) is the ith point in the diagram with
-multiplicity mass_i.</p>
+<cite>b_i d_i; mass_i</cite>
+where <cite>(b_i, d_i)</cite> is the ith point in the diagram with
+multiplicity <cite>mass_i</cite>.</p>
 </dd></dl>
 
 </dd></dl>

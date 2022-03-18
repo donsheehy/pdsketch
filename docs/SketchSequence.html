@@ -75,7 +75,7 @@
 <h1>The SketchSequence Class<a class="headerlink" href="#the-sketchsequence-class" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pdsketch.SketchSequence">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdsketch.</span></span><span class="sig-name descname"><span class="pre">SketchSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="Diagram.html#pdsketch.Diagram" title="pdsketch.diagram.Diagram"><span class="pre">pdsketch.diagram.Diagram</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdsketch.</span></span><span class="sig-name descname"><span class="pre">SketchSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="Diagram.html#pdsketch.Diagram" title="pdsketch.diagram.Diagram"><span class="pre">pdsketch.diagram.Diagram</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence" title="Permalink to this definition"></a></dt>
 <dd><p>A class to generate sketches from a persistence diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -87,8 +87,8 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pdsketch.SketchSequence.load_from_file">
-<span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.load_from_file" title="Permalink to this definition"></a></dt>
-<dd><p>Clears current sketches and loads sketches from a text file.
+<span class="sig-name descname"><span class="pre">load_from_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.load_from_file" title="Permalink to this definition"></a></dt>
+<dd><p>Loads a sketch sequence from a text file.
 File format:
 b_i d_i; parent_i; transportplan_i
 where (b_i, d_i) is the ith point added to the sketch, parent_i is its parent
@@ -97,12 +97,13 @@ and transportplan_i is the ith transportation plan in defaultdict(int) format.</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdsketch.SketchSequence.save_to_file">
-<span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sketch'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.save_to_file" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sketch.dgm'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdsketch.SketchSequence.save_to_file" title="Permalink to this definition"></a></dt>
 <dd><p>Save current sketches to a text file.
 The ith line will be saved as follows:
-b_i d_i; parent_i; transportplan_i
-where (b_i, d_i) is the ith point added to the sketch, parent_i is the index of its
-parent and transportplan_i is the ith transportation plan in defaultdict(int) format.</p>
+b_i d_i; mass_i; parent_i; updateplan_i
+where (b_i, d_i) is the ith point added to the sketch, parent_i is the
+index of its parent and updateplan_i is the ith transportation plan as
+a dictionary.</p>
 </dd></dl>
 
 <dl class="py method">
