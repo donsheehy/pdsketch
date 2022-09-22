@@ -1,4 +1,5 @@
-from pdsketch import Diagram, PDPointViz, PDPoint
+from pdsketch import Diagram, PDPoint
+from pdsketch.pdpointviz import PDPointViz
 from ds2viz.element import Line
 from ds2viz.canvas import svg_plus_pdf
 from pdsketch.sketch_style import sketch_style

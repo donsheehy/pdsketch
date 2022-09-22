@@ -1,4 +1,3 @@
-from matplotlib.pyplot import plot
 from pdsketch import PDPoint
 from ds2viz.element import Circle, Text
 from pdsketch.sketch_style import sketch_style
