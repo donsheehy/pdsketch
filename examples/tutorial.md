@@ -28,7 +28,7 @@ It is assumed that the list indices provides the correspondence between points a
 If the lengths don't match, you will get an error like the following.
 
 ```python {cmd continue="import"}
-Diagram([(1,4), (4,14), (2,12)], [10, 3])
+Diagram([(1,4), (4,14), (2,12)], [10, 3, 5])
 ```
 
 Points can be manually added to a diagram after it has been initialized.
