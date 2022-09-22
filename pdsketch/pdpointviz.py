@@ -6,7 +6,7 @@ class PDPointViz():
     """
     Class to depict a point in the persistence plane with mass using ds2viz. 
     """
-    def __init__(self, p:PDPoint, mass:int, plot_size:int , style:str=None):
+    def __init__(self, p:PDPoint, mass:int, plot_size:int, draw_label:bool=True, style:str=None):
         """
         Parameters
         ----------
@@ -24,6 +24,7 @@ class PDPointViz():
         self.point = [p[0], plot_size-p[1]]
         self.mass = mass
         self.style = style if style else '_circle'
+        self.draw_label = draw_label
 
     def draw(self, canvas):
         # !!!! Needs a change in ds2viz to run.
@@ -31,9 +32,10 @@ class PDPointViz():
         # Have also changed line 134 to modify size of textbox from 17* to 10*
         
         # Create mass label for a point and draw it
-        label = Text(str(self.mass), style='_text', stylesheet=sketch_style)
-        label.align('left', (self.point[0], self.point[1]))
-        label.draw(canvas)
+        if self.draw_label:
+            label = Text(str(self.mass), style='_text', stylesheet=sketch_style)
+            label.align('left', (self.point[0], self.point[1]))
+            label.draw(canvas)
 
         # Draw a point in a sketch as a circle
         point = Circle(1, style=self.style, stylesheet=sketch_style)

@@ -1,3 +1,5 @@
+# _draw_labels: 0
+
 _text:
   font_family : 'Helvetica'
   font_size : 5
@@ -41,7 +43,7 @@ _diagram_b:
 
 _match_mass:
   font_family : 'Helvetica'
-  font_size : 2
+  font_size : 10
   fill : [0, 0, 0]
   stroke: [0, 0, 0]
   stroke_width : 0

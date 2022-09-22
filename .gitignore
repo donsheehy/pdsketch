@@ -132,6 +132,7 @@ dmypy.json
 pdsketch/quotientspace.py
 pdsketch/persdiagram.py
 pdsketch/sketch.py
+pdsketch/plot_matching.py
 images/
 examples/*.py
 *.pdf
