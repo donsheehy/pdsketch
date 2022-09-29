@@ -23,7 +23,7 @@ from pdsketch.sketch_style import sketch_style
 Consider the following 1-dimensional PD obtained by sampling 1000 points from a sphere of radius 1000.
 
 ```python{cmd, continue, id=d_define, output=html}
-D = Diagram.load_from_file('sphere_2.dgm')
+D = Diagram.load_from_file('sphere_1000.dgm')
 ```
 ```python{cmd, continue=d_define,id=d_draw, output=html, hide}
 M = max(p[1] for p in D)+5
