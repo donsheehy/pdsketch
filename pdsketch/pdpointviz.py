@@ -1,12 +1,13 @@
 from pdsketch import PDPoint
-from ds2viz.element import Circle, Text
-from pdsketch.sketch_style import sketch_style
+from ds2viz.element import Circle, Text, Element
+from pdsketch.sketch_style import sketch_stylesheet
 
-class PDPointViz():
+
+class PDPointViz(Element):
     """
     Class to depict a point in the persistence plane with mass using ds2viz. 
     """
-    def __init__(self, p:PDPoint, mass:int, plot_size:int, draw_label:bool=True, style:str=None):
+    def __init__(self, p:PDPoint, mass:int, plot_size:int, draw_label:bool=True, style:str='', stylesheet=sketch_stylesheet):
         """
         Parameters
         ----------
@@ -21,6 +22,9 @@ class PDPointViz():
             Drawing style.
             Can be a particular diagram color.
         """
+
+        super().__init__(style, stylesheet)
+
         self.point = [p[0], plot_size-p[1]]
         self.mass = mass
         self.style = style if style else '_circle'
@@ -33,11 +37,11 @@ class PDPointViz():
         
         # Create mass label for a point and draw it
         if self.draw_label:
-            label = Text(str(self.mass), style='_text', stylesheet=sketch_style)
+            label = Text(str(self.mass), style='_text', stylesheet=self.stylesheet)
             label.align('left', (self.point[0], self.point[1]))
             label.draw(canvas)
 
         # Draw a point in a sketch as a circle
-        point = Circle(1, style=self.style, stylesheet=sketch_style)
+        point = Circle(1, style=self.style, stylesheet=self.stylesheet)
         point.align('center', (self.point[0], self.point[1]))
         point.draw(canvas)

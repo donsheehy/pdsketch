@@ -1,6 +1,30 @@
 # _draw_labels: 0
 
-_text:
+pd_graph:
+  text: 'text'
+  circle: 'circle'
+  boundary: 'boundary'
+  circle: 'circle'
+  diagonal: 'diagonal'
+  matching: 'matching'
+  bottleneck: 'bottleneck'
+  diagram_a: 'diagram_a'
+  diagram_b: 'diagram_b'
+  match_mass: 'match_mass'
+
+pd_graph_b:
+  text: 'text'
+  circle: 'circle'
+  boundary: 'boundary'
+  circle: 'circle'
+  diagonal: 'diagonal'
+  matching: 'matching'
+  bottleneck: 'bottleneck'
+  diagram_a: 'diagram_a'
+  diagram_b: 'diagram_b'
+  match_mass: 'match_mass'
+
+text:
   font_family : 'Helvetica'
   font_size : 5
   fill : [0,0,0]
@@ -8,40 +32,40 @@ _text:
   stroke_width : 0
   font_weight: 'normal'
 
-_circle:
+circle:
   fill: [1,1,1]
   stroke: [0,0,0]
   stroke_width: 2
 
-_boundary:
+boundary:
   fill: [1,1,1]
   stroke: [0,0,0]
   stroke_width: 2
 
-_diagonal:
+diagonal:
   fill: [0.5, 0.5, 0.5]
   stroke: [0.5 ,0.5, 0.5]
   stroke_width: 1
 
-_matching:
+matching:
   stroke: [0.5, 0.5, 0.5]
   stroke_width: 0.5
 
-_bottleneck:
+bottleneck:
   stroke: [0, 0, 0]
   stroke_width: 0.5
 
-_diagram_a:
+diagram_a:
   fill: [1, 0, 0]
   stroke: [1, 0, 0]
   stroke_width: 2
 
-_diagram_b:
+diagram_b:
   fill: [0, 0, 1]
   stroke: [0, 0, 1]
   stroke_width: 2
 
-_match_mass:
+match_mass:
   font_family : 'Helvetica'
   font_size : 10
   fill : [0, 0, 0]

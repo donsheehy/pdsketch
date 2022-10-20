@@ -1,7 +1,11 @@
 from pdsketch import Diagram, PDPoint
 from pdsketch.pdpointviz import PDPointViz
 from ds2viz.element import Line
-from pdsketch.sketch_style import sketch_style
+from pdsketch.sketch_style import sketch_stylesheet
+
+"""
+Reduce redundancy in the canvas in draw()
+"""
 
 class DiagramViz():
     """
@@ -24,11 +28,11 @@ class DiagramViz():
 
     def draw(self, canvas):
         # Draw diagonal and boundaries of persistence diagram
-        Line((0,self.plot_size), (self.plot_size,0), style='_diagonal', stylesheet=sketch_style).draw(canvas)
-        Line((0,0), (self.plot_size,0), style='_boundary', stylesheet=sketch_style).draw(canvas)
-        Line((self.plot_size,0), (self.plot_size,self.plot_size), style='_boundary', stylesheet=sketch_style).draw(canvas)
-        Line((self.plot_size,self.plot_size), (0,self.plot_size), style='_boundary', stylesheet=sketch_style).draw(canvas)
-        Line((0,self.plot_size), (0,0), style='_boundary', stylesheet=sketch_style).draw(canvas)
+        Line((0,self.plot_size), (self.plot_size,0), style='_diagonal', stylesheet=sketch_stylesheet).draw(canvas)
+        Line((0,0), (self.plot_size,0), style='_boundary', stylesheet=sketch_stylesheet).draw(canvas)
+        Line((self.plot_size,0), (self.plot_size,self.plot_size), style='_boundary', stylesheet=sketch_stylesheet).draw(canvas)
+        Line((self.plot_size,self.plot_size), (0,self.plot_size), style='_boundary', stylesheet=sketch_stylesheet).draw(canvas)
+        Line((0,self.plot_size), (0,0), style='_boundary', stylesheet=sketch_stylesheet).draw(canvas)
 
         # Draw points of the persistence diagram
         for p in self.points:

@@ -10,7 +10,7 @@ Sketching provides a useful way to approximate a PD while preserving the distrib
 from ds2viz.canvas import Canvas
 from pdsketch import PDPoint, Diagram, SketchSequence
 from pdsketch.diagramviz import DiagramViz
-from pdsketch.sketch_style import sketch_style
+from pdsketch.sketch_style import sketch_stylesheet
 ```
 ``` python {cmd=false, hide}
 # ripsing stuff
@@ -27,7 +27,7 @@ D = Diagram.load_from_file('sphere_1000.dgm')
 ```
 ```python{cmd, continue=d_define,id=d_draw, output=html, hide}
 M = max(p[1] for p in D)+5
-canvas = Canvas(M, M, styles=sketch_style)
+canvas = Canvas(M, M, styles=sketch_stylesheet)
 D_viz = DiagramViz(D, draw_labels=False)
 D_viz.draw(canvas)
 print(canvas.svgout())
@@ -47,7 +47,7 @@ sketches_to_draw = [5, 10, 15, 20]
 for i in sketches_to_draw:
     D_i = S[i]
     D_i_viz = DiagramViz(D_i)
-    canvas = Canvas(M, M, styles=sketch_style)
+    canvas = Canvas(M, M, styles=sketch_stylesheet)
     D_i_viz.draw(canvas)
     print(canvas.svgout())
 ```
