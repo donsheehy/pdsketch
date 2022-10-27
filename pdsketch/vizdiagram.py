@@ -32,9 +32,10 @@ class VizDiagram(Group):
 
         plot_size = max(p[1] for p in diagram)+5 if not plot_size else plot_size
         points = []
+        circle_style = self.style_dict['circle']
         for p in diagram:
             if not p.isdiagonalpoint():
-                self.addelement(PDPointViz(p, diagram.mass[p], plot_size, False), 'circle')
+                self.addelement(PDPointViz(p, diagram.mass[p], plot_size, False), circle_style)
 
         # Draw diagonal and boundaries of persistence diagram
         diagonal_style = self.style_dict['diagonal']

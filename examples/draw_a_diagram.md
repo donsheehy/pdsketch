@@ -9,7 +9,7 @@ from pdsketch.vizdiagram import VizDiagram
 from pdsketch.sketch_style import sketch_stylesheet
 
 A = Diagram.load_from_file("sphere_1000.dgm")
-B = Diagram.load_from_file("sphere_1000.dgm") # Change
+B = Diagram.load_from_file("D.dgm") # Change
 # b_stylesheet = load ...
 
 """
@@ -17,17 +17,14 @@ B = Diagaram ... # To merge together
 C = Diagaram ... # To merge together
 """
 
-# print(sketch_stylesheet.styles)
+size = 400
 
-Aviz = VizDiagram(A, style='pd_graph', stylesheet=sketch_stylesheet, plot_size=400)
-# Bviz = VizDiagram(B, style='pd_graph_b', stylesheet=sketch_stylesheet, plot_size=400)
+Aviz = VizDiagram(A, style='pd_graph', stylesheet=sketch_stylesheet, plot_size=size)
+Bviz = VizDiagram(B, style='pd_graph_b', stylesheet=sketch_stylesheet, plot_size=size)
 
-vizList = [Aviz]
+vizList = [Aviz, Bviz]
 
-# Get max
-max = 400
-
-canvas = Canvas(max, max, sketch_stylesheet)
+canvas = Canvas(size, size, sketch_stylesheet)
 # Aviz.draw(canvas)
 for viz in vizList:
     viz.draw(canvas)

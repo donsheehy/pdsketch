@@ -4,24 +4,18 @@ pd_graph:
   text: 'text'
   circle: 'circle'
   boundary: 'boundary'
-  circle: 'circle'
   diagonal: 'diagonal'
   matching: 'matching'
   bottleneck: 'bottleneck'
-  diagram_a: 'diagram_a'
-  diagram_b: 'diagram_b'
   match_mass: 'match_mass'
 
 pd_graph_b:
   text: 'text'
-  circle: 'circle'
+  circle: 'circle_b'
   boundary: 'boundary'
-  circle: 'circle'
   diagonal: 'diagonal'
   matching: 'matching'
   bottleneck: 'bottleneck'
-  diagram_a: 'diagram_a'
-  diagram_b: 'diagram_b'
   match_mass: 'match_mass'
 
 text:
@@ -36,6 +30,12 @@ circle:
   fill: [1,1,1]
   stroke: [0,0,0]
   stroke_width: 2
+
+circle_b:
+  fill: [1,0,0]
+  stroke: [1,0,0]
+  stroke_width: 5
+
 
 boundary:
   fill: [1,1,1]
