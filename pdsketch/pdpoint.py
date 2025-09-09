@@ -3,7 +3,7 @@ class PDPoint:
     A class to describe points in the persistence plane.
     """
         
-    def __init__(self, coords):
+    def __init__(self, coords, mass=1):
         """
         Parameters
         ----------
@@ -17,6 +17,7 @@ class PDPoint:
             print(coords)
             raise ValueError("Birth value cannot be greater than death value")
         self._p = tuple(float(x) for x in coords)
+        self.mass = mass
 
     @staticmethod
     def fromstring(s):
@@ -31,8 +32,12 @@ class PDPoint:
         Compute quotient distance in the persistence plane.
         The diagonal is treated as a single point.
         """
-        return self.pp_dist(other)
-
+        # return self.pp_dist(other)
+        if self.isdiagonalpoint() or other.isdiagonalpoint():
+            return max(self.diagdist(), other.diagdist())
+        else:
+            return self.l_inf_dist(other)
+        
     def diagproj(self):
         """
         Compute the projection of this point on the diagonal.
@@ -53,6 +58,17 @@ class PDPoint:
         down to the common subspace.
         """
         return max(abs(a-b) for (a,b) in zip(self, other))
+    
+    def diagdist(self):
+        return self.l_inf_dist(self.diagproj())
+    
+    def proj_dist(self, other):
+        if ((self.isdiagonalpoint() and other.isdiagonalpoint()) or
+            not(self.isdiagonalpoint() or other.isdiagonalpoint())):
+            return self.l_inf_dist(other)
+        else:
+            return max(self.diagdist(), other.diagdist())
+
         
     def isdiagonalpoint(self)->bool:
         """

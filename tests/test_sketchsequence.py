@@ -7,7 +7,7 @@ class TestSketchSequence(unittest.TestCase):
         S = SketchSequence(D)
         sketch_iter = iter(S)
         sketch = next(sketch_iter)
-        self.assertEqual(sketch.point, PDPoint([0,0]))
+        self.assertEqual(sketch.point, PDPoint([13.5,13.5]))
         self.assertEqual(sketch.parent, None)
 
     def test_sketch_zeroth(self):
@@ -19,7 +19,7 @@ class TestSketchSequence(unittest.TestCase):
         D = Diagram([(12,15), (12,16)])
         S = SketchSequence(D)
         a = PDPoint([12,16])
-        diagonal = PDPoint([0,0])
+        diagonal = PDPoint([13.5,13.5])
         self.assertEqual(S._sketches[1].update_plan[a], 2)
         self.assertEqual(S._sketches[1].update_plan[diagonal], -2)
         self.assertEqual(S[1], Diagram([(12,16)], [2]))

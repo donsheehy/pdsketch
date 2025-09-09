@@ -1,8 +1,7 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from metricspaces import MetricSpace
 from pdsketch import Diagram, PDPoint
-from greedypermutation.clarksongreedy import greedy
-from collections import namedtuple
+from pdsketch.clarkson_persistence import persistence_greedy
 
 SketchEntry = namedtuple('SketchEntry', ['point',
                                          'mass',
@@ -31,28 +30,30 @@ class SketchSequence:
             n = len(diagram)
 
         points, masses = diagram.get_point_mass_lists()
-        total_mass = diagram.total_mass
-        diagonal = PDPoint([0,0])
-        # Adding the diagonal with a multiplicity of 0.
-        points.append(diagonal)
-        masses.append(0)
-        sketches = greedy(M=MetricSpace(points),
-                          seed=diagonal,
-                          tree=True,
-                          gettransportplan=True,
-                          mass=masses)
+        sketches = persistence_greedy(MetricSpace(points), tuple(masses))
+        # points = [PDPoint((0,0), 0)] + points
+        # masses = [0] + masses
+        # sketches = greedy(MetricSpace(points), nbrconstant=2,
+        #                   tree = True,
+        #                 gettransportplan=True,
+        #                 mass= tuple(masses))
 
         # Handle the first point
         point, _, update_plan = next(sketches)
-        # self._sketches = [SketchEntry(point, 0, None, {point: total_mass})]
         self._sketches = [SketchEntry(point, 0, None, update_plan)]
 
         # Handle the rest of the points.
+        transport = defaultdict(int)
         for point, parent, update_plan in sketches:
+            for pt in update_plan:
+                transport[pt] += update_plan[pt]
+            if point.isdiagonalpoint():
+                continue
             mass = diagram.mass[point]
-            self._sketches.append(SketchEntry(point, mass, parent, update_plan))
+            self._sketches.append(SketchEntry(point, mass, parent, transport))
             if len(self._sketches) == n:
                 return
+            transport = defaultdict(int)
         # i = 0
         # while i <= n:
         #     point, parent_index, transport_plan = next(sketches)
@@ -71,36 +72,39 @@ class SketchSequence:
             return 0
         else:
             s = self._sketches[i+1]
-            parent = self._sketches[s.parent].point
-            return s.point.dist(parent)
+            return s.point.pp_dist(s.parent)
         # if i < len(self._sketches)-1:
         #     return self._sketches[i+1]['point'].dist(self._sketches[self._sketches[i+1]['parent_index']]['point'])
         # else:
         #     return None
 
-    def _to_dict(str_transport: str):
+    @classmethod
+    def _to_dict(cls, str_transport: str):
         """
         Internal method to convert string to transportation plan.
         Used only in method `load_from_file()`.
         """
         transport = defaultdict(int)
-        str_transport = str_transport[str_transport.find('{')+1:str_transport.find('}')]
+        # list_transport = str_transport[str_transport.find('{')+1:str_transport.find('}')]
         if str_transport == '':
             return transport
-        dict_entries = str_transport.split(", ")
+        dict_entries = str_transport[str_transport.find('{')+1:str_transport.find('}')].split(", ")
         for entry in dict_entries:
+            if not entry:
+                continue
             point_string, mass = entry.split(": ")
             point = PDPoint.fromstring(point_string)
             transport[point] = int(mass)
         return transport
 
-    def load_from_file(filename:str):
+    @classmethod
+    def load_from_file(cls, filename:str):
         """
         Loads a sketch sequence from a text file.
         File format:
-        b_i d_i; parent_i; transportplan_i
+        b_i d_i; mass_i; parent_i; updateplan_i
         where (b_i, d_i) is the ith point added to the sketch, parent_i is its parent
-        and transportplan_i is the ith transportation plan in defaultdict(int) format.
+        and updateplan_i is the ith transportation plan in defaultdict(int) format.
         """
         S = SketchSequence()
         with open(filename, 'r') as s:
@@ -108,7 +112,7 @@ class SketchSequence:
                 point, mass, parent, update_plan = sketch.rstrip().split("; ")
                 point = PDPoint.fromstring(point)
                 mass = int(mass)
-                parent = int(parent) if parent != 'None' else None
+                parent = PDPoint.fromstring(parent) if parent != 'None' else None
                 update_plan = SketchSequence._to_dict(update_plan)
                 S._sketches.append(SketchEntry(point, mass, parent, update_plan))
         return S

@@ -79,7 +79,8 @@ class Diagram():
                 masses.append(self.mass[p])
         return points, masses
 
-    def load_from_file(filename:str):
+    @classmethod
+    def load_from_file(cls, filename:str):
         """
         Loads a diagram from a text file.
         Format for ith line:
@@ -104,7 +105,7 @@ class Diagram():
         """
         return '\n'.join(f'{str(p)}; {str(self.mass[p])}' for p in self)
 
-    def save_to_file(self, filename:str = "diagram.txt"):
+    def save_to_file(self, filename:str = "diagram.dgm"):
         """
         Save current diagram to a text file.
         Format for ith line:
